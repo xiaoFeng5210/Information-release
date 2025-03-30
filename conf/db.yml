@@ -1,0 +1,7 @@
+mysql:
+  host: localhost
+  dbname: ir-mysql
+  port: 3306
+  user: tester
+  pass: 123456
+  log: ir-db.log
