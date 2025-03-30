@@ -2,11 +2,12 @@ package database
 
 import (
 	"fmt"
-	"information-release/util"
 	"log"
 	"os"
 	"path"
 	"time"
+
+	"infomation-release/util"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -20,8 +21,7 @@ var (
 
 func ConnectDB(confDir, confFile, fileType, logDir string) {
 	viper := util.InitViper(confDir, confFile, fileType)
-
-	db := viper.GetString("mysql.user")
+	user := viper.GetString("mysql.user")
 	pass := viper.GetString("mysql.pass")
 	host := viper.GetString("mysql.host")
 	port := viper.GetString("mysql.port")
