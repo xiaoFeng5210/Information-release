@@ -9,6 +9,8 @@ import (
 
 	"infomation-release/util"
 
+	"log/slog"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -24,8 +26,8 @@ func ConnectDB(confDir, confFile, fileType, logDir string) {
 	user := viper.GetString("mysql.user")
 	pass := viper.GetString("mysql.pass")
 	host := viper.GetString("mysql.host")
-	port := viper.GetString("mysql.port")
-	dbname := viper.GetString("mysql.dbname")
+	port := viper.GetInt("mysql.port")
+	dbname := "information_release"
 	logFileName := viper.GetString("mysql.log")
 	logFile, _ := os.OpenFile(path.Join(logDir, logFileName), os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
 
@@ -53,6 +55,8 @@ func ConnectDB(confDir, confFile, fileType, logDir string) {
 	if err != nil {
 		panic(err)
 	}
+
+	slog.Info("数据库连接成功")
 
 	sqlDB, err := db.DB()
 	sqlDB.SetMaxIdleConns(10)

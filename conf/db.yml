@@ -1,7 +1,6 @@
 mysql:
   host: localhost
-  dbname: ir-mysql
   port: 3306
-  user: tester
-  pass: 123456
-  log: ir-db.log
+  user: root
+  pass: 12345678
+  log: ir.log
