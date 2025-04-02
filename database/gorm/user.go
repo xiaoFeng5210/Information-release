@@ -78,7 +78,7 @@ func GetUserByID(uid int) *model.User {
 	return &user
 }
 
-func updateUserName(uid int, name string) error {
+func UpdateUserName(uid int, name string) error {
 	tx := globalDB.Model(&model.User{}).Where("id = ?", uid).Update("name", name)
 	if tx.Error != nil {
 		slog.Error("更新用户名失败", "error", tx.Error)
