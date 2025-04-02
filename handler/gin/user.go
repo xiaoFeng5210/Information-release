@@ -65,6 +65,10 @@ func RegisterUser(ctx *gin.Context) {
 // 	})
 // }
 
+// TODO:
+func Logout(ctx *gin.Context) {
+}
+
 func GetAllUsers(ctx *gin.Context) {
 	// 返回指针，可以自动解引用和序列化
 	users := database.GetAllUsers()
