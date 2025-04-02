@@ -33,37 +33,37 @@ func RegisterUser(ctx *gin.Context) {
 	})
 }
 
-func UpdatePassword(ctx *gin.Context) {
-	// TODO:
-	uid, ok := ctx.Value(UID_IN_CTX).(int)
-	if !ok {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code": -1,
-			"msg":  "请先登陆",
-		})
-		return
-	}
-	var req model.ModifyPassRequest
-	if err := ctx.ShouldBind(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code": -1,
-			"msg":  "参数错误",
-		})
-		return
-	}
-	err := database.UpdatePassword(uid, req.NewPass, req.OldPass)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code": -1,
-			"msg":  err.Error(),
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, gin.H{
-		"code": 0,
-		"msg":  "密码修改成功",
-	})
-}
+// func UpdatePassword(ctx *gin.Context) {
+// 	// TODO:
+// 	uid, ok := ctx.Value(UID_IN_CTX).(int)
+// 	if !ok {
+// 		ctx.JSON(http.StatusBadRequest, gin.H{
+// 			"code": -1,
+// 			"msg":  "请先登陆",
+// 		})
+// 		return
+// 	}
+// 	var req model.ModifyPassRequest
+// 	if err := ctx.ShouldBind(&req); err != nil {
+// 		ctx.JSON(http.StatusBadRequest, gin.H{
+// 			"code": -1,
+// 			"msg":  "参数错误",
+// 		})
+// 		return
+// 	}
+// 	err := database.UpdatePassword(uid, req.NewPass, req.OldPass)
+// 	if err != nil {
+// 		ctx.JSON(http.StatusBadRequest, gin.H{
+// 			"code": -1,
+// 			"msg":  err.Error(),
+// 		})
+// 		return
+// 	}
+// 	ctx.JSON(http.StatusOK, gin.H{
+// 		"code": 0,
+// 		"msg":  "密码修改成功",
+// 	})
+// }
 
 func GetAllUsers(ctx *gin.Context) {
 	// 返回指针，可以自动解引用和序列化
