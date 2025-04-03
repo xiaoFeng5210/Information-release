@@ -110,3 +110,6 @@ func GetUserByID(ctx *gin.Context) {
 		})
 	}
 }
+
+func GetUidFromCookie(ctx *gin.Context) (int, error) {
+}
