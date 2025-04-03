@@ -27,7 +27,7 @@ func ConnectDB(confDir, confFile, fileType, logDir string) {
 	pass := viper.GetString("mysql.pass")
 	host := viper.GetString("mysql.host")
 	port := viper.GetInt("mysql.port")
-	dbname := "information_release"
+	dbname := "ir"
 	logFileName := viper.GetString("mysql.log")
 	logFile, _ := os.OpenFile(path.Join(logDir, logFileName), os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
 

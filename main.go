@@ -16,6 +16,10 @@ func main() {
 	engine.GET("/download", handler.DownloadFile)
 
 	engine.GET("/users", handler.GetAllUsers)
+	engine.GET("/user", handler.GetUserInfo)
+	engine.POST("/user/create", handler.RegisterUser)
+	engine.POST("/login", handler.Login)
+	engine.POST("/logout", handler.Logout)
 
 	if err := engine.Run(":3154"); err != nil {
 		panic(err)

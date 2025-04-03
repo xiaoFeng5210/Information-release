@@ -1,6 +1,12 @@
-create database ir-mysql;
+CREATE DATABASE ir;
 
 create user 'tester' identified by '123456';
+
+USE ir;
+
+SELECT DATABASE();
+
+SHOW TABLES;
 
 -- 建表
 create table if not exists user(
@@ -11,5 +17,5 @@ create table if not exists user(
     update_time datetime default current_timestamp on update current_timestamp comment '最后修改时间',
 	primary key (id),
   -- 用户名唯一索引，确保name是唯一的。
-	unique key idx_name (name)  
+	unique key idx_name (name)
 )default charset=utf8mb4 comment '用户信息';

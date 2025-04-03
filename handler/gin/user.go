@@ -91,6 +91,7 @@ func Login(ctx *gin.Context) {
 			"code": -1002,
 			"msg":  "用户不存在",
 		})
+		return
 	}
 	if user2.PassWord != user.PassWord {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -126,6 +127,10 @@ func Login(ctx *gin.Context) {
 			false,       //是否只能通过https访问
 			true,        //设为false,允许js修改这个cookie（把它设为过期）,js就可以实现logout。如果为true，则需要由后端来重置过期时间
 		)
+		ctx.JSON(http.StatusOK, gin.H{
+			"code": 0,
+			"msg":  "登录成功",
+		})
 	}
 }
 
