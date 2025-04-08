@@ -27,8 +27,25 @@ func PostNews(uid int, title string, content string) (int, error) {
 	return news.Id, nil
 }
 
-func DeleteNews(id int, title, content string) error {
+func DeleteNews(id int) error {
 	tx := globalDB.Model(&model.News{}).Where("id = ?", id).Update("delete_time", time.Now())
+	if tx.Error != nil {
+		slog.Error("更新新闻失败", "error", tx.Error)
+		return errors.New("更新新闻失败")
+	} else {
+		if tx.RowsAffected <= 0 {
+			return fmt.Errorf("新闻id[%d]不存在", id)
+		} else {
+			return nil
+		}
+	}
+}
+
+func UpdateNews(id int, title, content string) error {
+	tx := globalDB.Model(&model.News{}).Where("id = ?", id).Updates(map[string]any{
+		"title":   title,
+		"content": content,
+	})
 	if tx.Error != nil {
 		slog.Error("更新新闻失败", "error", tx.Error)
 		return errors.New("更新新闻失败")
