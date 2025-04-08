@@ -22,6 +22,12 @@ func main() {
 	engine.POST("/logout", handler.Logout)
 
 	group := engine.Group("/news")
+	group.GET("", handler.NewsList)
+	group.POST("", handler.Auth, handler.PostNews)
+
+	group.GET("/:id", handler.GetNewsByID)
+	group.PUT("/:id", handler.Auth, handler.UpdateNews)
+	group.DELETE("/:id", handler.Auth, handler.DeleteNews)
 
 	if err := engine.Run(":3154"); err != nil {
 		panic(err)
