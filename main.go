@@ -21,6 +21,8 @@ func main() {
 	engine.POST("/login", handler.Login)
 	engine.POST("/logout", handler.Logout)
 
+	group := engine.Group("/news")
+
 	if err := engine.Run(":3154"); err != nil {
 		panic(err)
 	}

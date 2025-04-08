@@ -143,6 +143,43 @@ func UpdateNews(c *gin.Context) {
 	})
 }
 
+// 获取新闻列表
+func NewsList(ctx *gin.Context) {
+	page, err1 := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	pageSize, err2 := strconv.Atoi(ctx.DefaultQuery("page_size", "10"))
+	if err1 != nil || err2 != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": -1004,
+			"msg":  "参数错误,page不满足格式要求",
+		})
+	}
+
+	total, newsList := database.GetNewsByPage(page, pageSize)
+	if total < len(newsList) {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": -1005,
+			"msg":  "查询列表出现问题",
+		})
+	}
+	for _, ele := range newsList {
+		user := database.GetUserByID(ele.UserId)
+		if user != nil {
+			ele.UserName = user.Name
+		} else {
+			slog.Warn("could not get name of user", "uid", ele.UserId)
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "获取新闻列表成功",
+		"data": gin.H{
+			"total": total,
+			"list":  newsList,
+		},
+	})
+}
+
 // 判断新闻nid是不是用户uid发布的
 func newsBelongUser(nid, uid int) bool {
 	news := database.GetNewsByID(nid)
