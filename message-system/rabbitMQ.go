@@ -12,8 +12,9 @@ import (
 var ch *amqp.Channel
 
 func RabbitMQPublish() {
-	username := "aurora.coder.zqf@gmail.com"
-	password := "Ff85859852"
+	// aurora.coder.zqf@gmail.com
+	username := "guest"
+	password := "guest"
 	dialStr := fmt.Sprintf("amqp://%s:%s@localhost:5672/", username, password)
 	conn, err := amqp.Dial(dialStr)
 	defer conn.Close()
@@ -47,8 +48,8 @@ func RabbitMQPublish() {
 
 // 消费者
 func RabbitMQConsume() {
-	username := "aurora.coder.zqf@gmail.com"
-	password := "Ff85859852"
+	username := "guest"
+	password := "guest"
 	dialStr := fmt.Sprintf("amqp://%s:%s@localhost:5672/", username, password)
 	conn, err := amqp.Dial(dialStr)
 	defer conn.Close()
@@ -72,9 +73,16 @@ func RabbitMQConsume() {
 		nil,    // args
 	)
 	failOnError(err, "Failed to register a consumer")
-	for msg := range qmqpMsgs {
-		log.Printf("Received a message: %s", msg.Body)
-	}
+
+	forever := make(chan string)
+	go func() {
+		for msg := range qmqpMsgs {
+			forever <- string(msg.Body)
+		}
+	}()
+
+	msg := <-forever
+	log.Printf("Received a message: %s", msg)
 }
 
 func failOnError(err error, msg string) {
