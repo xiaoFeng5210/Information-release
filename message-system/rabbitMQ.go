@@ -55,6 +55,7 @@ func RabbitMQConsume() {
 	defer conn.Close()
 	failOnError(err, "Failed to connect to RabbitMQ")
 	ch, _ = conn.Channel()
+	defer ch.Close() // RabbitMQ 通道
 	q, err := ch.QueueDeclare(
 		"hello", // name
 		false,   // durable
@@ -76,6 +77,7 @@ func RabbitMQConsume() {
 
 	forever := make(chan string)
 	go func() {
+		defer close(forever)
 		for msg := range qmqpMsgs {
 			forever <- string(msg.Body)
 		}
