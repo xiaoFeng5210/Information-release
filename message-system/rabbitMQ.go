@@ -4,12 +4,15 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 var ch *amqp.Channel
+
+var wg sync.WaitGroup
 
 func RabbitMQPublish() {
 	// aurora.coder.zqf@gmail.com
@@ -33,7 +36,7 @@ func RabbitMQPublish() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	body := "Hello World!"
+	body := "张庆风爱杨诗颖!"
 	err = ch.PublishWithContext(ctx,
 		"",     // exchange
 		q.Name, // routing key
@@ -76,14 +79,17 @@ func RabbitMQConsume() {
 	failOnError(err, "Failed to register a consumer")
 
 	forever := make(chan string)
+	defer close(forever)
+
+	wg.Add(1)
 	go func() {
-		defer close(forever)
 		for msg := range qmqpMsgs {
 			forever <- string(msg.Body)
 		}
 	}()
 
 	msg := <-forever
+	wg.Done()
 	log.Printf("Received a message: %s", msg)
 }
 
